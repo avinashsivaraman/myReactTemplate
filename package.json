@@ -8,13 +8,15 @@
     "express": "^4.15.2",
     "graphql-server-express": "^0.7.2",
     "graphql-tools": "^0.11.0",
+    "material-ui": "^0.18.0",
     "morgan": "^1.8.1",
     "react": "^15.5.4",
     "react-apollo": "^1.1.0",
     "react-bootstrap": "^0.30.10",
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1"
+    "react-router-dom": "^4.1.1",
+    "react-tap-event-plugin": "^2.0.1"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"

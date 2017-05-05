@@ -1,0 +1,141 @@
+Commiting with Notification API
+
+# --------------
+# Please enter the commit message for your changes. Everything below
+# this paragraph is ignored, and an empty message aborts the commit.
+# Just close the window to accept your message.
+diff --git a/src/components/About/index.js b/src/components/About/index.js
+index b1fb755..12e4494 100644
+--- a/src/components/About/index.js
++++ b/src/components/About/index.js
+@@ -1,19 +1,47 @@
+ import React, { Component } from 'react';
+ import classnames from 'classnames';
++import icon from './logo.svg'
+ 
+ import './style.css';
+ 
++const NotificationLetter = ['YOu are AweSome', 'One Man ArmY', 'My God, You are alive', 'I am FucKing TiRed', 'YoU aRe BeaUtiFul']
++
+ export default class About extends Component {
+   // static propTypes = {}
+   // static defaultProps = {}
+   // state = {}
++  componentWillMount() {
++      Notification.requestPermission();
++  }
++
++  componentDidMount() {
++    new Notification('Rendered');
++  }
++
++  NotifyMe() {
++    // Let's check if the browser supports notifications
++    if (!("Notification" in window)) {
++      alert("This browser does not support desktop notification");
++    }
+ 
++    // Let's check whether notification permissions have already been granted
++    else if (Notification.permission === "granted") {
++      // If it's okay let's create a notification
++      var options = {
++        body: NotificationLetter[Math.floor(Math.random()*4)],
++        icon: icon,
++        vibrate: [100,200,100]
++      }
++      var notification = new Notification("NOtification Here", options);
++      notification.vibrate;
++    }
++}
+   render() {
+     const { className, ...props } = this.props;
+     return (
+       <div className={classnames('About', className)} {...props}>
+         <h1>
+-          About
++          <button className='btn btn-primary' id='NotifyMe' onClick={this.NotifyMe}>NotifyMe</button>
+         </h1>
+       </div>
+     );
+diff --git a/src/components/App/logo.svg b/src/components/About/logo.svg
+similarity index 100%
+rename from src/components/App/logo.svg
+rename to src/components/About/logo.svg
+diff --git a/src/components/ToDo/index.js b/src/components/ToDo/index.js
+new file mode 100644
+index 0000000..822e726
+--- /dev/null
++++ b/src/components/ToDo/index.js
+@@ -0,0 +1,42 @@
++import React from 'react';
++import classnames from 'classnames';
++
++const ToDoDiv = () => (
++  <div>
++    <button className="btn btn-success">Edit</button>
++    <button className="btn btn-danger">Delete</button>
++  </div>
++);
++
++
++export default class toDo extends React.Component {
++  constructor(props) {
++    super(props);
++    this.state = {
++      counter: 0,
++      toDo: []
++    };
++    this.handleClick = this.handleClick.bind(this);
++  }
++  handleClick = (event) => {
++    event.preventDefault();
++    this.setState({
++      counter: this.state.counter+1
++    });
++  }
++
++  render() {
++    const {className, ...props} = this.props;
++    return (
++      <div className={classnames('Todo',className)} {...props}>
++        <button className='btn btn-primary' id='increment'onClick={this.handleClick}> Increment </button>
++        <button className='btn btn-danger'  id='decrement'onClick={this.handleClick}> Decrement </button>
++        <span className='pull-right'>{this.state.counter}</span>
++        <button className='btn btn-primary' id='increment'onClick={this.handleClick}> Add </button>
++        toDo.map((key)=> {
++
++        })
++      </div>
++    );
++  }
++}
+diff --git a/src/index.js b/src/index.js
+index 01cbd71..816ac27 100644
+--- a/src/index.js
++++ b/src/index.js
+@@ -25,6 +25,7 @@ class AppHeader extends React.Component {
+               <Nav>
+                 <NavItem eventKey={1}><Link to='/'>Home</Link></NavItem>
+                 <NavItem eventKey={2}><Link to='/about'>About</Link></NavItem>
++                <NavItem eventKey={3}><Link to='/todo'>To-Do </Link></NavItem>
+               </Nav>
+             </Navbar.Collapse>
+           </Navbar>
+diff --git a/src/routes.js b/src/routes.js
+index afabc84..227e0ef 100644
+--- a/src/routes.js
++++ b/src/routes.js
+@@ -5,11 +5,13 @@ import { Route, Switch } from 'react-router-dom';
+ import App from './components/App';
+ import About from './components/About';
+ import NotFound from './components/NotFound';
++import Todo from './components/ToDo';
+ 
+ const Routes = (props) => (
+     <Switch>
+       <Route exact path="/" component={App} />
+       <Route path="/about" component={About} />
++      <Route path='/todo' component={Todo} />
+       <Route path="*" component={NotFound} />
+     </Switch>
+ );
