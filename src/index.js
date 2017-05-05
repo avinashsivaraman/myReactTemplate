@@ -7,6 +7,8 @@ import {AppBar, Tabs, Tab} from 'material-ui'
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Routes from './routes';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 
 //const store = configureStore();
