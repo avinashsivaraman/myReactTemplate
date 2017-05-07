@@ -1,8 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
-
+import HorizontalLinearStepper from './HorizontalLinearStepper'
 import { Paper, Snackbar } from 'material-ui';
 import './style.css';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 const style = {
   height: 100,
@@ -24,16 +26,18 @@ export default class toDo extends React.Component {
       open: false,
       message: `Do you want to reset `,
       Lap: [],
-      play: 'stop'
+      play: 'stop',
+      showStepper: false
     };
     this.showSnackbar = false;
     this.handleClick = this.handleClick.bind(this);
     this.moonLight = this.moonLight.bind(this);
+    this.setGoalTarget = this.setGoalTarget.bind(this);
   }
   handleClick = (event) => {
     event.preventDefault();
     switch(event.target.id){
-      case 'increment':
+      /*case 'increment':
         this.setState(prevState => {
         return { counter: prevState.counter+1 };
       });
@@ -43,7 +47,7 @@ export default class toDo extends React.Component {
           return { counter: (prevState.counter-1 > 0) ? prevState.counter-1 : 0 };
         });
         break;
-      }
+      }*/
       case 'clear': {
         this.setState({
           counter: 0,
@@ -120,17 +124,24 @@ export default class toDo extends React.Component {
   componentWillUnmount() {
     clearInterval(this.interval);
   }
+
+  setGoalTarget({goal, time}) {
+    console.log(goal, time);
+    this.setState({
+      showStepper: !this.state.showStepper 
+    });
+  }
   render() {
     const {className, ...props} = this.props;
     const { Lap } = this.state;
     return (
       <div className={classnames('Todo',className)} {...props}>
         <canvas id="demo-canvas"></canvas>
-        <button className='btn btn-primary btn-space col-xs-2' id='increment'onClick={this.handleClick}> Increment </button>
-        <button className='btn btn-danger btn-space col-xs-2'  id='decrement'onClick={this.handleClick}> Decrement </button>
+        <div className='col-xs-12'>
+          <HorizontalLinearStepper callBack={this.setGoalTarget} show={!this.state.showStepper}/>
+        </div>
         <div id='centered' className='col-xs-12'>
           <div className='col-xs-12'>
-            <Paper className='col-xs-4'style={style} zDepth={5} circle={true}><h1>{this.state.counter}</h1>count</Paper>
             { Lap.map((key,i) => {
                 return <span className='col-xs-4'> You are lap {i+1} at {key} <br /></span>
             })}
@@ -145,6 +156,11 @@ export default class toDo extends React.Component {
             <button className='btn btn-danger btn-space col-xs-2'  id='lap' onClick={this.handleClick}> Lap </button> </div>} 
           </div>
         </div>
+        <FloatingActionButton secondary={true} style={{marginRight: 20}} onTouchTap={()=>{this.setState(prevState => {
+          return {showStepper: !prevState.showStepper}
+        });}}>
+          <ContentAdd />
+        </FloatingActionButton>
         {this.moonLight()}
         <Snackbar
           open={this.showSnackbar}
