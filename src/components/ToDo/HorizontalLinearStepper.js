@@ -18,7 +18,7 @@ import TextField from 'material-ui/TextField';
 class HorizontalLinearStepper extends React.Component {
   static propTypes = {
     callBack: React.PropTypes.func.isRequired,
-    hide: React.PropTypes.bool.isRequired
+    show: React.PropTypes.bool.isRequired
   }
   constructor(props){
     super(props);

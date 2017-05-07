@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import HorizontalLinearStepper from './HorizontalLinearStepper'
 import { Paper, Snackbar } from 'material-ui';
-import './style.css';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
@@ -11,7 +10,7 @@ const style = {
   width: 100,
   margin: 20,
   textAlign: 'center',
-  display: 'relative',
+  display: 'block-inline',
 };
 
 
@@ -36,7 +35,7 @@ export default class toDo extends React.Component {
   }
   handleClick = (event) => {
     event.preventDefault();
-    switch(event.target.id){
+    switch(event.currentTarget.id){
       /*case 'increment':
         this.setState(prevState => {
         return { counter: prevState.counter+1 };
@@ -133,27 +132,28 @@ export default class toDo extends React.Component {
   }
   render() {
     const {className, ...props} = this.props;
-    const { Lap } = this.state;
+    const { Lap, play } = this.state;
+    const colorPlay = (play==='stop') ?  'btn btn-primary' :  'btn btn-danger' 
     return (
       <div className={classnames('Todo',className)} {...props}>
         <canvas id="demo-canvas"></canvas>
-        <div className='col-xs-12'>
+        <div className='col-xs-8'>
           <HorizontalLinearStepper callBack={this.setGoalTarget} show={!this.state.showStepper}/>
         </div>
-        <div id='centered' className='col-xs-12'>
+        <div className='col-xs-4'>
           <div className='col-xs-12'>
             { Lap.map((key,i) => {
                 return <span className='col-xs-4'> You are lap {i+1} at {key} <br /></span>
             })}
-            <Paper className='col-xs-4 pull-right' style={style} zDepth={2} circle={true}><h1>{this.state.timer}</h1> min </Paper>
+            <Paper className='col-xs-4' style={style} zDepth={2} circle={true}><h1>{this.state.timer}</h1> min </Paper>
           </div>
           <div className = 'col-xs-12'>
-            <button className='btn btn-danger btn-space col-xs-2'  id='clear'onClick={this.handleClick}> Clear </button>
-            <button className='btn btn-primary btn-space col-xs-2'  id={this.state.play} onClick={this.handleClick}> {(this.state.play).toUpperCase()} </button>
-            { (this.state.play === 'stop' || this.state.timer === 0 ) && <div>
-            <button className='btn btn-success btn-space col-xs-2'  id='fast' onClick={this.handleClick}> Fast Forward </button>
-            <button className='btn btn-primary btn-space col-xs-2'  id='slow' onClick={this.handleClick} > Slow Down </button>
-            <button className='btn btn-danger btn-space col-xs-2'  id='lap' onClick={this.handleClick}> Lap </button> </div>} 
+            <button className='btn btn-danger btn-space'  id='clear' onClick={this.handleClick}><i className='fa fa-times' aria-hidden /></button>
+            <button className= {colorPlay}  id={this.state.play} onClick={this.handleClick} ><i className='fa fa-play-circle' aria-hidden /></button>
+            { (this.state.play === 'stop') && <div>
+            <button className='btn btn-success btn-space'  id='fast' onClick={this.handleClick}><i className='fa fa-forward' aria-hidden /></button>
+            <button className='btn btn-primary btn-space'  id='slow' onClick={this.handleClick} ><i className='fa fa-backward' aria-hidden/> </button>
+            <button className='btn btn-danger btn-space'  id='lap' onClick={this.handleClick}><i className='fa fa-level-up' aria-hidden/></button> </div>} 
           </div>
         </div>
         <FloatingActionButton secondary={true} style={{marginRight: 20}} onTouchTap={()=>{this.setState(prevState => {

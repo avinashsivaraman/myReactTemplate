@@ -1,0 +1,8 @@
+.centered {
+  display: block;
+  margin: 0 auto;
+  height: 800px;
+  text-align: center;
+  width: 800px;
+  padding: 15px;
+  padding-right: 5px; }
