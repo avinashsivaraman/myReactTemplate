@@ -9,6 +9,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Routes from './routes';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
+import './scss/test.scss';
 
 
 //const store = configureStore();
